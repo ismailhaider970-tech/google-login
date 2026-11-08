@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Google Sign-In Demo</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body style="font-family:Arial;text-align:center;padding:40px;background:#f5f5f5">
+
+  <h2>Google Sign-In</h2>
+  <p>Sign in securely with your Google account.</p>
+
+  <div id="g_id_onload"
+       data-client_id="YOUR_GOOGLE_CLIENT_ID"
+       data-callback="handleCredential">
+  </div>
+
+  <div class="g_id_signin"
+       data-type="standard"
+       data-size="large">
+  </div>
+
+  <div id="result"></div>
+
+  <script>
+    function handleCredential(response) {
+      const data = JSON.parse(
+        atob(response.credential.split('.')[1]
+          .replace(/-/g, '+').replace(/_/g, '/'))
+      );
+
+      document.getElementById('result').innerHTML =
+        '<h3>Login Successful</h3>' +
+        '<p>Name: ' + escapeHTML(data.name) + '</p>' +
+        '<p>Email: ' + escapeHTML(data.email) + '</p>';
+    }
+
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, c =>
+        ({'&':'&amp;','<':'&lt;','>':'&gt;',
+          '"':'&quot;',"'":'&#39;'}[c])
+      );
+    }
+  </script>
+
+</body>
+</html>
